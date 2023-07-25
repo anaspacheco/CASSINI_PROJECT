@@ -2,30 +2,16 @@
 
 This repository contains the following files:
 
-##image_model.py
+## image_model.py
 
-![Image Model](./IMAGES/N1610585886_1_Simulated.png)
+**Description**: 
+The `image_model.py` file downloads a simulation of the given image from http://space.jpl.nasa.gov/. Please edit the file with the HTML of your desired image. 
 
-Description: 
-The `image_model.py` file contains the implementation of the image processing model used in this project. It includes functions for image classification, feature extraction, and image manipulation.
+### Usage: getmodel.py [-h] -d DATA [-f FOV] [-p PCT]
 
-### Usage
-
-```python
-# Import the ImageModel class
-from image_model import ImageModel
-
-# Create an instance of the model
-model = ImageModel()
-
-# Load an image
-image = model.load_image('path/to/image.jpg')
-
-# Classify the image
-classification_result = model.classify_image(image)
-
-# Extract features from the image
-features = model.extract_features(image)
-
-# Perform image manipulation
-manipulated_image = model.manipulate_image(image, parameter1, parameter2)
+```python 
+optional arguments:
+  -h, --help            show this help message and exit
+  -d DATA, --data DATA  Source dataset to model
+  -f FOV, --fov FOV     Field of view (angle)
+  -p PCT, --pct PCT     Body width as percentage of image
