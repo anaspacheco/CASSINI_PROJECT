@@ -9,7 +9,7 @@ The `image_model.py` file downloads a simulation of the given image from http://
 
 Much of the code was given by https://github.com/kmgill/cassini_processing, but changes were made to avoid the use of the ISIS3 software and to simplify the process.
 
-### Usage: getmodel.py [-h] -d DATA [-f FOV] [-p PCT]
+### Usage: get_model.py [-h] -d DATA [-f FOV] [-p PCT]
 
 ```python 
 optional arguments:
