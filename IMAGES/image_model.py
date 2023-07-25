@@ -6,49 +6,60 @@ import argparse
 import rasterio
 import pvl
 from datetime import datetime
+import contextlib
 
-image_id = "N1610585886_1"
-label_file_path ='/Users/anasofiapacheco/Desktop/'+image_id+'.LBL'
+'''
+Much of this code was borrowed from: https://github.com/kmgill/cassini_processing/blob/master/getmodel.py
+Several changes were done in order to avoid the use of the ISIS3 Software
+Also, LBL file is now sourced from its HTML, so that image does not have to be downloaded
+'''
 
-# Loading the label file using pvl
+#Label for the image (with metadata)
+label_url = 'https://planetarydata.jpl.nasa.gov/img/data/cassini/cassini_orbiter/coiss_2094/data/1804940659_1805087145/N1805078832_1.LBL'
+
+# Fetching the label file
+label_response = requests.get(label_url)
+label_response.raise_for_status()  
+label_content = label_response.content.decode("utf-8")  
+
+#Image ID (will automate this later on)
+image_id = "N1805078832_1"
+
+#Loading the label file using pvl
 try:
-    with open(label_file_path, 'r') as f:
-        label_data = pvl.load(f)
+    label_data = pvl.loads(label_content)
 except FileNotFoundError:
     print("Error: The specified label file does not exist.")
 
-# Extract Image Number
 image_number = label_data['IMAGE_NUMBER']
 
-#print("Image Number:", image_number)
-
-# Extract Date and Time Information
 image_time= label_data['IMAGE_TIME']
 
-#Extract Instrument_ID:
 camera = label_data['INSTRUMENT_ID']
 
-#Extract target name 
 target = label_data['TARGET_NAME']
 
 # Extract individual date and time components
 day = image_time.day
 month = image_time.strftime("%B")
+month_number = datetime.strptime(month, "%B").month
 year = image_time.year
 hour = image_time.hour
 minute = image_time.minute
 second = image_time.second
 
-# Define the URL of the JPL NASA website
-URL = "https://space.jpl.nasa.gov/"
+# URL of website
+URL = "https://space.jpl.nasa.gov/cgi-bin/wspace/"
 
-# Create a session to maintain cookies and headers across requests
 session = requests.Session()
 
-# Send a GET request to the website to retrieve the initial page and extract the required form data
-response = session.get(URL)
-soup = BeautifulSoup(response.content, "html.parser")
+with contextlib.redirect_stdout(None):
+    response = session.get(URL)
 
+with contextlib.redirect_stdout(None):
+    soup = BeautifulSoup(response.content, "html.parser")
+
+#Target IDS
 TARGET_IDS = {
     "CASSINI": -82,
     "SUN": 1000,
@@ -89,7 +100,7 @@ output_path = f"{image_id}_Simulated.jpg"
 
 default_fov = 1
 if camera == "ISSNA":
-    default_fov = 0.35
+    default_fov = 45
 elif camera == "ISSWA":
     default_fov = 3.5
 
@@ -108,20 +119,22 @@ if target not in TARGET_IDS:
 params = {
         "tbody": TARGET_IDS[target],
         "vbody": TARGET_IDS["CASSINI"],
-        "year": image_time.year,
-        "month": image_time.month,
-        "day": image_time.day,
-        "hour": image_time.hour,
-        "minute": image_time.minute,
-        "rfov": fov,
+        "month": month_number,
+        "day": day,
+        "year": year,
+        "hour": hour,
+        "minute": minute,
         "fovmul": 1 if use_fov else -1,
+        "rfov": fov,
         "bfov": pct,
-        "porbs": 1,
         "showac": 1,
-        "submit": "Run Simulator"
     }
 
-r = requests.get(URL, params=params)
+complete_url = f"{URL}?tbody={TARGET_IDS[target]}&vbody={TARGET_IDS['CASSINI']}&month={month_number}&day={day}&year={year}&hour={hour}&minute={minute}&fovmul={1 if use_fov else -1}&rfov={fov}&bfov={pct}&showac=1"
+
+with contextlib.redirect_stdout(None):
+    r = session.get(complete_url)
+
 if r.status_code == 200:
     with open(output_path, 'wb') as f:
         for chunk in r:
