@@ -14,16 +14,22 @@ Several changes were done in order to avoid the use of the ISIS3 Software
 Also, LBL file is now sourced from its HTML, so that image does not have to be downloaded
 '''
 
-#Label for the image (with metadata)
+#Adding comment 
+
+#Label for the image (with metadata), provide this manually please
+#Can also automate this later on if a large scale processing is needed 
+
 label_url = 'https://planetarydata.jpl.nasa.gov/img/data/cassini/cassini_orbiter/coiss_2094/data/1804940659_1805087145/N1805078832_1.LBL'
+#Image ID
+image_id = os.path.splitext(os.path.basename(label_url))[0]
+
 
 # Fetching the label file
 label_response = requests.get(label_url)
 label_response.raise_for_status()  
 label_content = label_response.content.decode("utf-8")  
 
-#Image ID (will automate this later on)
-image_id = "N1805078832_1"
+
 
 #Loading the label file using pvl
 try:
