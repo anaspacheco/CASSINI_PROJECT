@@ -7,7 +7,7 @@ This repository contains the following files:
 **Description**: 
 The `image_model.py` file downloads a simulation of the given image from http://space.jpl.nasa.gov/. Please edit the file with the HTML of your desired image from https://pds-imaging.jpl.nasa.gov/search/. 
 
-Much of the code was given by https://github.com/kmgill/cassini_processing, but changes were made to avoid the use of the ISIS3 software and to simplify the process.
+Much of the code was given by https://github.com/kmgill/cassini_processing, but changes were made to avoid using ISIS3 software and to simplify the process.
 
 ### Usage: get_model.py [-h] -d DATA [-f FOV] [-p PCT]
 
