@@ -20,15 +20,14 @@ Also, LBL file is now sourced from its HTML, so that image does not have to be d
 #Can also automate this later on if a large scale processing is needed 
 
 label_url = 'https://planetarydata.jpl.nasa.gov/img/data/cassini/cassini_orbiter/coiss_2094/data/1804940659_1805087145/N1805078832_1.LBL'
+
 #Image ID
 image_id = os.path.splitext(os.path.basename(label_url))[0]
-
 
 # Fetching the label file
 label_response = requests.get(label_url)
 label_response.raise_for_status()  
 label_content = label_response.content.decode("utf-8")  
-
 
 
 #Loading the label file using pvl
@@ -90,7 +89,6 @@ TARGET_IDS = {
 }
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-d", "--data", help="Source dataset to model", required=True, type=str)
 parser.add_argument("-f", "--fov", help="Field of view (angle)", required=False, type=float)
 parser.add_argument("-p", "--pct", help="Body width as percentage of image", required=False, type=float)
 
@@ -98,7 +96,6 @@ use_fov = True
 
 args = parser.parse_args()
 
-source = args.data
 fov = args.fov
 pct = args.pct
 
