@@ -25,6 +25,8 @@ optional arguments:
 **Description**: 
 The `image_extract.py` file extracts images from https://pds-imaging.jpl.nasa.gov/search/ and plots them using rasterio. The image metadata is written to an output file with the image_id. Read [Rasterio Plotting](https://rasterio.readthedocs.io/en/latest/topics/plotting.html) for further analysis tools. 
 
+### Sample Image: <br><br> ![Image_Model](./IMAGES/N1607484037_1.png) 
+
 ## metadata_extract.py
 The `metadata_extract.py` file extracts the metadata from the index.tab for a given volume (please paste html within the file) and outputs them into a csv with the volume_id and labeled columns given by the index.lbl. 
 
