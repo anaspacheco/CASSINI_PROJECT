@@ -19,11 +19,27 @@ with rasterio.open(image_url) as dataset:
     image_data = dataset.read(1)  # Single-band image
 
 # Plot the image using matplotlib
-plt.imshow(image_data, cmap='gray')
-plt.title(image_id)
-plt.xlabel('Pixel Column')
-plt.ylabel('Pixel Row')
-plt.show()
+#plt.imshow(image_data, cmap='gray', interpolation='nearest')
+# Define a threshold for higher brilliance (adjust this value as needed)
+threshold = 200
+
+# Find the indices of pixels with brilliance above the threshold
+higher_brilliance_indices = np.argwhere(image_data > threshold)
+
+# Calculate the bounding box coordinates (xmin, xmax, ymin, ymax)
+xmin, ymin = higher_brilliance_indices.min(axis=0)
+xmax, ymax = higher_brilliance_indices.max(axis=0)
+
+# Crop the image to the higher brilliance region
+cropped_image_data = image_data[ymin:ymax, xmin:xmax]
+
+
+
+#plt.title(image_id)
+#plt.xlabel('Pixel Column')
+#plt.ylabel('Pixel Row')
+plt.imshow(cropped_image_data, cmap='gray', interpolation='nearest')
+#plt.show()
 
 #Possibility: add contour
 '''

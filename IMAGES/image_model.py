@@ -16,10 +16,11 @@ Also, LBL file is now sourced from its HTML, so that image does not have to be d
 
 #Adding comment 
 
+
 #Label for the image (with metadata), provide this manually please
 #Can also automate this later on if a large scale processing is needed 
 
-label_url = 'https://planetarydata.jpl.nasa.gov/img/data/cassini/cassini_orbiter/coiss_2094/data/1804940659_1805087145/N1805078832_1.LBL'
+label_url = 'https://planetarydata.jpl.nasa.gov/img/data/cassini/cassini_orbiter/coiss_2052/data/1609475102_1609640902/W1609475157_1.LBL'
 
 #Image ID
 image_id = os.path.splitext(os.path.basename(label_url))[0]
