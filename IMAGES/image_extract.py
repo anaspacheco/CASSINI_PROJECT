@@ -19,34 +19,14 @@ with rasterio.open(image_url) as dataset:
     image_data = dataset.read(1)  # Single-band image
 
 # Plot the image using matplotlib
-#plt.imshow(image_data, cmap='gray', interpolation='nearest')
-# Define a threshold for higher brilliance (adjust this value as needed)
-threshold = 200
+plt.imshow(image_data, cmap='gray', interpolation= "nearest")
+plt.title(image_id)
+plt.xlabel('Pixel Column')
+plt.ylabel('Pixel Row')
 
-# Find the indices of pixels with brilliance above the threshold
-higher_brilliance_indices = np.argwhere(image_data > threshold)
+plt.savefig(image_id + ".png", dpi=300)
 
-# Calculate the bounding box coordinates (xmin, xmax, ymin, ymax)
-xmin, ymin = higher_brilliance_indices.min(axis=0)
-xmax, ymax = higher_brilliance_indices.max(axis=0)
-
-# Crop the image to the higher brilliance region
-cropped_image_data = image_data[ymin:ymax, xmin:xmax]
-
-
-
-#plt.title(image_id)
-#plt.xlabel('Pixel Column')
-#plt.ylabel('Pixel Row')
-plt.imshow(cropped_image_data, cmap='gray', interpolation='nearest')
-#plt.show()
-
-#Possibility: add contour
-'''
-contour_levels = np.linspace(image_data.min(), image_data.max(), 10) 
-plt.contour(image_data, levels=contour_levels, colors='red')
 plt.show()
-'''
 
 #Label of image, to be outputed to a file
 
@@ -76,4 +56,3 @@ with rasterio.open(image_path) as image:
 plt.imshow(image_array, cmap='gray')  # 'cmap' since image is grayscale
 plt.show()
 '''
-
